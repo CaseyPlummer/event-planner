@@ -17,8 +17,9 @@
             <h2 class="text-lg font-bold">{event.id}: {event.title}</h2>
             <p>{event.description}</p>
             <p>{event.date}</p>
+            <p><a class="btn" href="/{event.id}/edit" role="button">Edit Event</a></p>
         </div>
     {/each}
 {/await}
 
-<a class="btn" href="/newevent" role="button">Add Event</a>
+<a class="btn" href="/add" role="button">Add Event</a>
