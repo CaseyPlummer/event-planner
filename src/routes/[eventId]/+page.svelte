@@ -6,9 +6,13 @@
 
 
 <div>
-    {#if data.event}
-        <h2 class="text-lg font-bold">{data.event.id}: {data.event.title}</h2>
-        <p>{data.event.description}</p>
-        <p>{data.event.date}</p>
-    {/if}
+    {#await data.streamed.event}
+        <p>Loading...</p>
+    {:then event}
+        {#if event}
+            <h2 class="text-lg font-bold">{event.id}: {event.title}</h2>
+            <p>{event.description}</p>
+            <p>{event.date}</p>
+        {/if}
+    {/await}
 </div>
