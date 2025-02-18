@@ -4,7 +4,7 @@
     import Spinner from './Spinner.svelte';
 
     interface Props {
-        form?: unknown;
+        form?: { error: string; };
         event?: Event;
     }    
     let { form, event }: Props = $props();
@@ -36,4 +36,7 @@
             {event ? 'Update' : 'Create'} Event
         {/if}
     </button>
+	{#if form?.error}
+        <p class="mt-2 text-red-400">{form?.error}</p>
+	{/if}
 </form>
