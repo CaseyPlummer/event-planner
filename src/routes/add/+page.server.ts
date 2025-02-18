@@ -1,6 +1,8 @@
 import { createEvent } from "$lib/server/remote-events";
+import { eventSchema } from "$lib/validation/schemas";
+import { fail, redirect } from "@sveltejs/kit";
+import { DateTime } from "luxon";
 import type { Actions } from "./$types";
-import { error, redirect } from "@sveltejs/kit";
 
 export const actions: Actions = {
     default: async ({request}) => {
@@ -8,10 +10,23 @@ export const actions: Actions = {
         const title = formdata.get('title')?.toString();
         const description = formdata.get('description')?.toString();
         const date = formdata.get('date')?.toString();
-        if (!title || !date) {
-            error(400, 'Title and Date are required');
+
+        const createSchema = eventSchema        
+            .omit({id: true})
+            .refine(e => {
+                const when = DateTime.fromISO(e.date);
+                return when > DateTime.now();
+            }, {message: 'The event must be in the future'});
+        const parsed = createSchema.safeParse({title, description, date});
+
+        if (parsed.success) {       
+            const { data } = parsed;
+            const newEvent = await createEvent({title: data.title, description: data.description, date: data.date});
+            redirect(303, `/${newEvent.id}`);
         }
-        const newEvent = await createEvent({title, description, date});
-        redirect(303, `/${newEvent.id}`);
+
+        return fail(422, {
+            error: parsed.error.errors[0].message
+        });
     }
 }

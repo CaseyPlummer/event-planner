@@ -4,7 +4,7 @@
 
     interface Props {
         data: PageData, 
-        form: ActionData
+        form: ActionData & { error?: string; }
     }    
     let {data, form}: Props = $props();
 </script>
