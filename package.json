@@ -43,6 +43,7 @@
 		"@tailwindcss/forms": "^0.5.9",
 		"@tailwindcss/typography": "^0.5.15",
 		"luxon": "^3.5.0",
+		"sass": "^1.85.0",
 		"zod": "^3.24.2"
 	}
 }
