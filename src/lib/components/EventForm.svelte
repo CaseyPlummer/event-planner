@@ -2,7 +2,6 @@
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import type { Event } from '../server/remote-events';
-	import Spinner from './Spinner.svelte';
 
 	interface Props {
 		form?: { error: string };
@@ -96,7 +95,7 @@
 
 		<button type="submit" class="btn btn-primary" disabled={saving}>
 			{#if saving}
-				<Spinner /> Saving...
+				<span class="loading loading-spinner loading-md"></span> Saving...
 			{:else}
 				{event ? 'Update' : 'Create'} Event
 			{/if}

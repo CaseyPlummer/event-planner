@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Spinner from '$lib/components/Spinner.svelte';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import { formatDate } from '$lib/dates';
@@ -9,6 +8,20 @@
 	let deletingId: number | undefined = $state(undefined);
 
 	const goToEdit = (id: number) => goto(`/${id}/edit`);
+	const showModal = (id: string) => {
+		const found = document?.getElementById(id);
+		const element = found ? (found as HTMLFormElement) : undefined;
+		if (element) {
+			element.showModal();
+		}
+	};
+	const closeModal = (id: string) => {
+		const found = document?.getElementById(id);
+		const element = found ? (found as HTMLFormElement) : undefined;
+		if (element) {
+			element.close();
+		}
+	};
 </script>
 
 <h1 class="text-xl bold">Events</h1>
@@ -28,27 +41,48 @@
 					</div>
 					<p>{event.description}</p>
 					<p>{formatDate(event.date)}</p>
+
 					<div class="card-actions justify-end mt-4">
-						<form
-							method="POST"
-							action="?/delete"
-							use:enhance={() => {
-								deletingId = event.id;
-								return async ({ update }) => {
-									await update();
-									deletingId = undefined;
-								};
-							}}
+						<button class="btn btn-neutral" onclick={() => showModal(`delete_confirm_${event.id}`)}
+							>Delete Event</button
 						>
-							<input type="text" id="id" name="id" class="hidden" value={event?.id} />
-							<button type="submit" class="btn btn-neutral" disabled={!!deletingId}>
-								{#if deletingId === event.id}
-									<Spinner /> Deleting...
-								{:else}
-									Delete Event
-								{/if}
-							</button>
-						</form>
+
+						<dialog id={`delete_confirm_${event.id}`} class="modal">
+							<div class="modal-box">
+								<h3 class="text-lg font-bold">Confirm</h3>
+								<p class="py-4">Are you sure you wish to delete this event?</p>
+								<div class="modal-actionasdf">
+									<form
+										method="POST"
+										action="?/delete"
+										use:enhance={() => {
+											deletingId = event.id;
+											return async ({ update }) => {
+												await update();
+												deletingId = undefined;
+											};
+										}}
+									>
+										<input type="text" id="id" name="id" class="hidden" value={event?.id} />
+										<div class="modal-action">
+											<button
+												type="button"
+												class="btn btn-neutral"
+												disabled={!!deletingId}
+												onclick={() => closeModal(`delete_confirm_${event.id}`)}>Cancel</button
+											>
+											<button type="submit" class="btn btn-primary ml-1" disabled={!!deletingId}>
+												{#if deletingId === event.id}
+													<span class="loading loading-spinner loading-md"></span> Deleting...
+												{:else}
+													Delete Event
+												{/if}
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</dialog>
 
 						<button
 							class="btn btn-primary"
@@ -62,7 +96,7 @@
 	{/await}
 </div>
 
-<a class="btn mt-6" href="/add" role="button">Add Event</a>
+<a class="btn btn-primary mt-6" href="/add" role="button">Add Event</a>
 
 <style>
 </style>
