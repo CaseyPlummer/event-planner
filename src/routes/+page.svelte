@@ -31,7 +31,7 @@
 		<p>Loading...</p>
 	{:then events}
 		{#each events as event}
-			<div class="card bg-base-100 w-96 shadow-xl">
+			<div class="card bg-base-100 w-96 shadow-xl mt-4">
 				<div class="card-body">
 					<div class="card-header flex">
 						<h2 class="card-title">{event.title}</h2>
