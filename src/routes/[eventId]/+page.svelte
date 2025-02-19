@@ -1,4 +1,5 @@
 <script lang="ts">
+	import HomeIcon from '$lib/components/HomeIcon.svelte';
 	import { formatDate } from '$lib/dates';
 	import type { PageData } from './$types';
 
@@ -6,6 +7,23 @@
 </script>
 
 <div>
+	<div class="breadcrumbs text-sm mb-4">
+		<ul>
+			<li>
+				<HomeIcon />
+				<a class="ml-1" href="/">Events</a>
+			</li>
+
+			{#await data.streamed.event}
+				<!-- <li>Loading...</li> -->
+			{:then event}
+				{#if event}
+					<li>{event.title}</li>
+				{/if}
+			{/await}
+		</ul>
+	</div>
+
 	{#await data.streamed.event}
 		<p>Loading...</p>
 	{:then event}
