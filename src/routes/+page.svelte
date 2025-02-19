@@ -3,16 +3,12 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
-	import { DateTime } from 'luxon';
+	import { formatDate } from '$lib/dates';
 
 	let { data }: { data: PageData } = $props();
 	let deletingId: number | undefined = $state(undefined);
 
 	const goToEdit = (id: number) => goto(`/${id}/edit`);
-    const formatDate = (iso: string) => {
-        const when = DateTime.fromISO(iso);
-        return when.toLocaleString(DateTime.DATETIME_SHORT);
-    };
 </script>
 
 <h1 class="text-xl bold">Events</h1>
@@ -24,12 +20,12 @@
 		{#each events as event}
 			<div class="card bg-base-100 w-96 shadow-xl">
 				<div class="card-body">
-                    <div class="card-header flex">
-                        <h2 class="card-title">{event.title}</h2>
-                        <span class="flex-grow"></span>
-                        <span class="mt-2 text-xs">ID</span>
-                        <span class="mt-2 text-xs ml-1 font-bold">{event.id}</span>
-                    </div>
+					<div class="card-header flex">
+						<h2 class="card-title">{event.title}</h2>
+						<span class="flex-grow"></span>
+						<span class="mt-2 text-xs">ID</span>
+						<span class="mt-2 text-xs ml-1 font-bold">{event.id}</span>
+					</div>
 					<p>{event.description}</p>
 					<p>{formatDate(event.date)}</p>
 					<div class="card-actions justify-end mt-4">
