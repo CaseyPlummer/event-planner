@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Spinner from '$lib/components/Spinner.svelte';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import { formatDate } from '$lib/dates';
@@ -43,7 +42,7 @@
 							<input type="text" id="id" name="id" class="hidden" value={event?.id} />
 							<button type="submit" class="btn btn-neutral" disabled={!!deletingId}>
 								{#if deletingId === event.id}
-									<Spinner /> Deleting...
+									<span class="loading loading-spinner loading-md"></span> Deleting...
 								{:else}
 									Delete Event
 								{/if}
