@@ -29,11 +29,6 @@
 					<p>{event.description}</p>
 					<p>{formatDate(event.date)}</p>
 					<div class="card-actions justify-end mt-4">
-						<button
-							class="btn btn-primary"
-							onclick={() => goToEdit(event.id)}
-							disabled={!!deletingId}>Edit Event</button
-						>
 						<form
 							method="POST"
 							action="?/delete"
@@ -54,6 +49,12 @@
 								{/if}
 							</button>
 						</form>
+
+						<button
+							class="btn btn-primary"
+							onclick={() => goToEdit(event.id)}
+							disabled={!!deletingId}>Edit Event</button
+						>
 					</div>
 				</div>
 			</div>
